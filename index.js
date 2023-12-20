@@ -11,8 +11,8 @@ const nextButton = document.querySelector('[data-js="button-next"]');
 const pagination = document.querySelector('[data-js="pagination"]');
 
 // States
-const maxPage = 1;
-const page = 1;
+let maxPage = 1;
+let page = 1;
 const searchQuery = "";
 
 async function fetchCharacters() {
@@ -25,6 +25,8 @@ async function fetchCharacters() {
     }
     const data = await response.json();
 
+    maxPage = data.info.pages; //Maximal erlaubte Seitenzahl aktualisieren
+
     const cardContainer = document.querySelector(".card-container");
     cardContainer.innerHTML = ""; // Leeren des Containers vor dem Hinzufügen neuer Karten
 
@@ -32,9 +34,29 @@ async function fetchCharacters() {
       const characterCard = CharacterCard(character);
       cardContainer.appendChild(characterCard);
     });
+
+    const paginationDisplay = document.querySelector('.navigation__pagination');
+    paginationDisplay.textContent = `${page} / ${maxPage}`;
+
   } catch (error) {
     console.error("Error fetching character data:", error);
   }
 }
+//Event Listener für Next und Prev Button
+
+
+nextButton.addEventListener('click', () => {
+  if (page < maxPage) {
+    page++;
+    fetchCharacters();
+  }
+});
+
+prevButton.addEventListener('click', () => {
+  if (page > 1) {
+    page--;
+    fetchCharacters();
+  }
+});
 
 fetchCharacters();
