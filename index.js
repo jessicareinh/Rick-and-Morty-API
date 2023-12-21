@@ -18,12 +18,13 @@ const searchQuery = "";
 async function fetchCharacters() {
   try {
     const response = await fetch(
-      "https://rickandmortyapi.com/api/character?page=1"
+      `https://rickandmortyapi.com/api/character?page=${page}`
     );
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
     const data = await response.json();
+    console.log("API Antwort:", data);
 
     maxPage = data.info.pages; //Maximal erlaubte Seitenzahl aktualisieren
 
@@ -35,24 +36,23 @@ async function fetchCharacters() {
       cardContainer.appendChild(characterCard);
     });
 
-    const paginationDisplay = document.querySelector('.navigation__pagination');
+    const paginationDisplay = document.querySelector(".navigation__pagination");
     paginationDisplay.textContent = `${page} / ${maxPage}`;
-
   } catch (error) {
     console.error("Error fetching character data:", error);
   }
+  console.log("Aktuelle Seite:", page);
 }
 //Event Listener für Next und Prev Button
 
-
-nextButton.addEventListener('click', () => {
+nextButton.addEventListener("click", () => {
   if (page < maxPage) {
     page++;
     fetchCharacters();
   }
 });
 
-prevButton.addEventListener('click', () => {
+prevButton.addEventListener("click", () => {
   if (page > 1) {
     page--;
     fetchCharacters();
