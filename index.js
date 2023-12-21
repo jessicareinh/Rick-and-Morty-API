@@ -12,14 +12,18 @@ const pagination = document.querySelector('[data-js="pagination"]');
 
 // States
 // von const auf let geändert, damit die variable veränderbar ist
-let maxPage = 1;
+let maxPage = 42;
 let page = 1;
 let searchQuery = "";
 
 searchBar.addEventListener("submit", (event) => {
   event.preventDefault(); //verhindert das neu laden der seite beim absenden
-  searchQuery = searchBar.querySelector(".search-bar__input").value.trim();
+  // searchQuery = searchBar.querySelector(".search-bar__input").value.trim();
 
+  const formElements = event.target.elements;
+  searchQuery = formElements.query.value;
+  //searchQuery = event.target.elements.query.value
+  //searchQuery = event.target.query.value
   fetchCharacters();
 });
 
